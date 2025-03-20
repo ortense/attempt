@@ -1,29 +1,65 @@
 {
-  "name": "tools",
-  "version": "1.0.0",
-  "description": "a set of helper funcions written in typescript",
-  "license": "MIT",
-  "author": "Marcus Ortense <marcus.ortense@outlook.com>",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
-    "lint": "biome lint .",
-    "format": "biome format . --write",
-    "check": "biome check --apply ."
-  },
-  "type": "module",
-  "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@types/node": "^22.13.10",
-    "tsup": "^8.4.0",
-    "typescript": "^5.8.2",
-    "vitest": "^3.0.9"
-  }
+	"name": "@ortense/attempt",
+	"version": "0.0.0",
+	"description": "A minimalist TypeScript library for safe error handling using the Result Type pattern",
+	"main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"lint": "biome check ./src",
+		"format": "biome check --write ./src",
+		"change": "changeset",
+		"release": "changeset publish"
+	},
+	"keywords": [
+		"typescript",
+		"error-handling",
+		"result-type",
+		"functional",
+		"type-safe",
+		"zero-dependencies"
+	],
+	"author": "Marcus Ortense <marcus.ortense@outlook.com>",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ortense/attempt.git"
+	},
+	"bugs": {
+		"url": "https://github.com/ortense/attempt/issues"
+	},
+	"homepage": "https://github.com/ortense/attempt#readme",
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@changesets/cli": "^2.28.1",
+		"@vitest/coverage-v8": "^3.0.9",
+		"tsup": "^8.4.0",
+		"typescript": "^5.0.0",
+		"vitest": "^3.0.9"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"README.pt-br.md",
+		"LICENSE"
+	],
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	}
 }
