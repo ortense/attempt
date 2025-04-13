@@ -57,8 +57,7 @@ describe("attempt", () => {
 
 describe("attemptAsync", () => {
 	it("should return success when Promise resolves", async () => {
-		const fn = async () => 42;
-		const result = await attemptAsync(fn);
+		const result = await attemptAsync(Promise.resolve(42));
 
 		expect(result.success).toBe(true);
 		expect((result as Success<number>).value).toBe(42);
@@ -66,11 +65,8 @@ describe("attemptAsync", () => {
 
 	it("should return failure when Promise rejects with Error", async () => {
 		const errorMessage = "Test async error";
-		const fn = async () => {
-			throw new Error(errorMessage);
-		};
 
-		const result = await attemptAsync(fn);
+		const result = await attemptAsync(Promise.reject(new Error(errorMessage)));
 		const failure = result as Failure<Error>;
 
 		expect(result.success).toBe(false);
@@ -79,29 +75,16 @@ describe("attemptAsync", () => {
 	});
 
 	it("should convert non-Error rejection into Error instance", async () => {
-		const fn = async () => {
-			throw "string async error";
-		};
-
-		const failure = (await attemptAsync(fn)) as Failure<Error>;
+		const failure = (await attemptAsync(
+			Promise.reject("string async error"),
+		)) as Failure<Error>;
 
 		expect(failure.error).toBeInstanceOf(Error);
 		expect(failure.error.message).toBe("string async error");
 	});
 
 	it("should handle nested promises", async () => {
-		const fn = () => Promise.resolve(Promise.resolve(42));
-		const result = await attemptAsync(fn);
-
-		expect(result.success).toBe(true);
-		if (result.success) {
-			expect(result.value).toBe(42);
-		}
-	});
-
-	it("should handle immediate values in async context", async () => {
-		const fn = async () => 42;
-		const result = await attemptAsync(fn);
+		const result = await attemptAsync(Promise.resolve(Promise.resolve(42)));
 
 		expect(result.success).toBe(true);
 		if (result.success) {

@@ -34,21 +34,20 @@ export function attempt<T, E extends Error>(fn: () => T): Result<T, E> {
 }
 
 /**
- * Executes an async function and wraps its result in a Result type.
+ * Executes a Promise and wraps its result in a Result type.
  * If the promise rejects, the error is caught and wrapped in a Failure result.
  *
  * @template T The type of the success value
  * @template E The type of error, must extend Error
- * @param fn The async function to execute
+ * @param p The Promise to execute
  * @returns A Promise of a Result containing either the resolved value or any rejection error
  *
  * @example
  * ```typescript
- * const result = await attemptAsync(async () => {
- *   const response = await fetch("https://api.example.com/data");
- *   if (!response.ok) throw new Error("API error");
- *   return response.json();
- * });
+ * const result = await attemptAsync(
+ *   fetch("https://api.example.com/data")
+ *     .then(response => response.json())
+ * );
  *
  * if (result.success) {
  *   console.log(result.value); // API data
@@ -58,9 +57,7 @@ export function attempt<T, E extends Error>(fn: () => T): Result<T, E> {
  * ```
  */
 export function attemptAsync<T, E extends Error>(
-	fn: () => Promise<T>,
+	p: Promise<T>,
 ): Promise<Result<T, E>> {
-	return fn()
-		.then(success)
-		.catch((error) => failure<E>(error));
+	return p.then(success).catch((error) => failure<E>(error));
 }
