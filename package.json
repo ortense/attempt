@@ -1,6 +1,6 @@
 {
 	"name": "@ortense/attempt",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "A minimalist TypeScript library for safe error handling using the Result Type pattern",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
