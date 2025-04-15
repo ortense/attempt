@@ -72,6 +72,11 @@ type Failure<E extends Error> = {
 }
 
 type Result<T, E extends Error> = Success<T> | Failure<E>
+
+type Match<T, E extends Error> = {
+  success: (value: T) => void;
+  failure: (error: E) => void;
+}
 ```
 
 ### Funções
@@ -82,6 +87,20 @@ Cria um resultado de sucesso contendo um valor.
 ```typescript
 const result = success(42)
 // { success: true, value: 42 }
+```
+
+#### `match<T, E extends Error>(result: Result<T, E>, match: Match<T, E>): void`
+Executa diferentes callbacks baseados no estado do resultado.
+
+```typescript
+match(result, {
+  success: (value) => {
+    console.log("Sucesso:", value)
+  },
+  failure: (error) => {
+    console.error("Falha:", error)
+  }
+})
 ```
 
 #### `failure<E extends Error>(error: unknown): Failure<E>`
